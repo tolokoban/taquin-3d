@@ -1,0 +1,23 @@
+{
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/tolokoban/webgl-experiments.git"
+    },
+    "homepage": "https://github.com/tolokoban/webgl-experiments",
+    "bugs": {
+      "url": "https://github.com/tolokoban/webgl-experiments/issues"
+    },
+    "scripts": {
+      "test": "jasmine",
+      "test:dbg": "node --debug-brk node_modules/jasmine/bin/jasmine.js"
+    },
+    "name": "webgl-experiments",
+    "version": "0.0.152",
+    "author": "Tolokoban",
+    "description": "WebGL experiments",
+    "license": "GPL",
+    "tfw": {
+      "modules": [],
+      "compile": {"type": "firefoxos", "files": "\\.html$"}
+    }
+}
