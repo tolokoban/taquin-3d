@@ -6,28 +6,52 @@ module.exports = function(x, y, z) {
     var materials = [
         // Left
         createMaterial(
-            "L", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            color),
+            [
+                "abcdefghi".charAt(z + 3*y),
+                "#",
+                "IHGFEDCBA".charAt(z + 3*y)
+            ][x],
+            ["#0ff", "#777", "#0bb"][x]),
         // Right
         createMaterial(
-            "R", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            color),
+            [
+                "IHGFEDCBA".charAt(2 - z + 3*y),
+                "#",
+                "abcdefghi".charAt(2 - z + 3*y)
+            ][x],
+            ["#f00", "#777", "#b00"][x]),
         // Up
         createMaterial(
-            "U", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            color),
+            [
+                "ihgfedcba".charAt(x + 3*z),
+                "#",
+                "ABCDEFGHI".charAt(x + 3*z)
+            ][y],
+            ["#0f0", "#777", "#0b0"][y]),
         // Down
         createMaterial(
-            "D", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            color),
+            [
+                "IHGFEDCBA".charAt(2 - x + 3*z),
+                "#",
+                "abcdefghi".charAt(2 - x + 3*z)
+            ][y],
+            ["#f0f", "#777", "#b0b"][y]),
         // Back
         createMaterial(
-            "B", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            color),
+            [
+                "abcdefghi".charAt(2 - x + 3*y),
+                "#",
+                "IHGFEDCBA".charAt(2 - x + 3*y)
+            ][z],
+            ["#ff0", "#777", "#bb0"][z]),
         // Front
         createMaterial(
-            "F", //"ABCDEFGHI".charAt((x+y+z) % 9),
-            ["#f80", "#777", "#840"][z]),
+            [
+                "IHGFEDCBA".charAt(x + 3*y),
+                "#",
+                "abcdefghi".charAt(x + 3*y)
+            ][z],
+            ["#00f", "#777", "#00b"][z])
     ];
     var mesh = new THREE.Mesh(
         new THREE.BoxGeometry( 1, 1, 1, 1, 1, 1 ),

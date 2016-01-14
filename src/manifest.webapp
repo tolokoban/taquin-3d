@@ -1,6 +1,6 @@
 {
   "name": "webgl-experiments",
-  "version": "0.0.155",
+  "version": "0.0.176",
   "description": "WebGL experiments",
   "launch_path": "/index.html",
   "fullscreen": "false",
