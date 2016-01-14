@@ -67,6 +67,48 @@ var RotateTouch = function(canvas) {
             time0 = time1;
         }
     });
+
+    canvas.addEventListener("mousedown", function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        status = MOUSEDOWN;
+        timeTouchStart = time0 = Date.now();
+        that.x = ( evt.clientX / canvas.width ) * 2 - 1;
+        that.x0 = that.x;
+        that.y = -( evt.clientY / canvas.height ) * 2 + 1;
+        that.y0 = that.y;
+        // Stop rotation as soon as the user touches the screen.
+        that.rotation.speedX = that.rotation.speedY = 0;
+    });
+    canvas.addEventListener("mouseup", function(evt) {
+        if (status != MOUSEDOWN) return;
+        status = 0;
+        evt.preventDefault();
+        evt.stopPropagation();
+        var deltaTime = Date.now() - timeTouchStart;
+        if (deltaTime > 400) return;
+        var x, y;
+        x = ( evt.clientX / canvas.width ) * 2 - 1;
+        y = -( evt.clientY / canvas.height ) * 2 + 1;
+        var dis = Math.max(Math.abs(that.x0 - x), Math.abs(that.y0 - y));
+        if (dis > 0.05) return;
+        that._tap = true;
+    });
+    canvas.addEventListener("mousemove", function(evt) {
+        if (status != MOUSEDOWN) return;
+        evt.preventDefault();
+        var touches = evt.changedTouches;
+        var x, y;
+        x = ( evt.clientX / canvas.width ) * 2 - 1;
+        y = -( evt.clientY / canvas.height ) * 2 + 1;
+        var time1 = Date.now();
+        var deltaTime = Math.max(0.001, time1 - time0);
+        that.rotation.speedY = (x - that.x) / deltaTime;
+        that.rotation.speedX = (y - that.y) / deltaTime;
+        that.x = x;
+        that.y = y;
+        time0 = time1;
+    });
 };
 
 

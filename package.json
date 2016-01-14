@@ -12,7 +12,7 @@
       "test:dbg": "node --debug-brk node_modules/jasmine/bin/jasmine.js"
     },
     "name": "webgl-experiments",
-    "version": "0.0.152",
+    "version": "0.0.155",
     "author": "Tolokoban",
     "description": "WebGL experiments",
     "license": "GPL",
