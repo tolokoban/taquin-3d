@@ -6,4 +6,3 @@ Hence, __taquin-3d__ is the 3D version of this game. Tapping a tiny cube will mo
 
 [Live demo](https://tolokoban.github.io/taquin-3d/)
 
-
