@@ -10,6 +10,13 @@ body {
     background: #000;
 }
 
+hr {
+    border: none;
+    margin: 1em;
+    height: .1em;
+    background: linear-gradient(to right, transparent, #fff, transparent);
+}
+
 @media (orientation: portrait) {
     canvas {
         width: 100vw;

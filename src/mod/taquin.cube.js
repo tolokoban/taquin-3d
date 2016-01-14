@@ -8,50 +8,50 @@ module.exports = function(x, y, z) {
         createMaterial(
             [
                 "abcdefghi".charAt(z + 3*y),
-                "#",
+                " ",
                 "IHGFEDCBA".charAt(z + 3*y)
             ][x],
-            ["#0ff", "#777", "#0bb"][x]),
+            ["#0ff", "#8bb", "#0bb"][x]),
         // Right
         createMaterial(
             [
                 "IHGFEDCBA".charAt(2 - z + 3*y),
-                "#",
+                " ",
                 "abcdefghi".charAt(2 - z + 3*y)
             ][x],
-            ["#f00", "#777", "#b00"][x]),
+            ["#f00", "#b44", "#b00"][x]),
         // Up
         createMaterial(
             [
                 "ihgfedcba".charAt(x + 3*z),
-                "#",
+                " ",
                 "ABCDEFGHI".charAt(x + 3*z)
             ][y],
-            ["#0f0", "#777", "#0b0"][y]),
+            ["#0f0", "#4b4", "#0b0"][y]),
         // Down
         createMaterial(
             [
                 "IHGFEDCBA".charAt(2 - x + 3*z),
-                "#",
+                " ",
                 "abcdefghi".charAt(2 - x + 3*z)
             ][y],
-            ["#f0f", "#777", "#b0b"][y]),
+            ["#f0f", "#b8b", "#b0b"][y]),
         // Back
         createMaterial(
             [
                 "abcdefghi".charAt(2 - x + 3*y),
-                "#",
+                " ",
                 "IHGFEDCBA".charAt(2 - x + 3*y)
             ][z],
-            ["#ff0", "#777", "#bb0"][z]),
+            ["#ff0", "#bb8", "#bb0"][z]),
         // Front
         createMaterial(
             [
                 "IHGFEDCBA".charAt(x + 3*y),
-                "#",
+                " ",
                 "abcdefghi".charAt(x + 3*y)
             ][z],
-            ["#00f", "#777", "#00b"][z])
+            ["#00f", "#44b", "#00b"][z])
     ];
     var mesh = new THREE.Mesh(
         new THREE.BoxGeometry( 1, 1, 1, 1, 1, 1 ),
@@ -98,6 +98,17 @@ function createBump(text) {
     ctx.fillRect(0, 0, 128, 128);
     ctx.fillStyle = "#777";
     ctx.fillRect(1, 1, 126, 126);
+    var shift = Math.random() * canvas.width * 2 - canvas.width;
+    var x = Math.min(-shift, 0);
+    var color = Math.floor(120 + Math.random() * 6);
+    while (x < Math.max(canvas.width, canvas.width - shift)) {
+        ctx.strokeStyle = "rgb(" + color + "," + color + "," + color + ")";
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + shift, 128);
+        ctx.stroke();
+        x += 2 + Math.random() * 5;
+    }
     ctx.font = 'Bold 96px Arial';
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
