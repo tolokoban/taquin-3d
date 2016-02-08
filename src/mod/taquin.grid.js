@@ -50,7 +50,7 @@ Grid.prototype.anim = function(time) {
             anim.cube.scale.z = 1;
             anim.cube = null;
         } else {
-            var scale = 1 - .5 * Math.sin(Math.PI * (time - anim.start) / dur);
+            var scale = 1 - .75 * Math.sin(Math.PI * (time - anim.start) / dur);
             anim.cube.scale.x = anim.cube.scale.y = anim.cube.scale.z = scale;
         }
     } else {
@@ -141,6 +141,8 @@ Grid.prototype.tap = function(cube, time) {
  * @return void
  */
 Grid.prototype.cube = function(x, y, z, cube) {
+    if ( x < 0 || y < 0 || z < 0 ) return undefined;
+    if ( x > 2 || y > 2 || z > 2 ) return undefined;
     var index = Math.floor(x + y * this._dx + z * this._dx * this._dy);
     if (index < 0 || index >= this._cubes.length) return undefined;
     if (typeof cube === 'undefined') return this._cubes[index];
