@@ -1,4 +1,4 @@
-
+var TEXTURE_SIDE = 128;
 
 
 module.exports = function(x, y, z) {
@@ -67,17 +67,18 @@ module.exports = function(x, y, z) {
 
 function createCanvas(text, color) {
     var canvas = document.createElement("canvas");
-    canvas.width = 128;
-    canvas.height = 128;
+    var W = TEXTURE_SIDE, H = TEXTURE_SIDE;
+    canvas.width = W;
+    canvas.height = H;
     var ctx = canvas.getContext("2d");
 
     ctx.fillStyle = color;
-    ctx.fillRect(0, 0, 128, 128);
-    ctx.font = 'Bold 96px Arial';
+    ctx.fillRect(0, 0, W, H);
+    ctx.font = 'Bold ' + Math.floor(W * 3 / 4) + 'px Arial';
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#000";
-    ctx.fillText(text, 64, 64);
+    ctx.fillText(text, W / 2, H / 2);
 
     return canvas;
 }
@@ -90,33 +91,34 @@ function createTexture(text, color) {
 
 function createBump(text) {
     var canvas = document.createElement("canvas");
-    canvas.width = 128;
-    canvas.height = 128;
+    var W = TEXTURE_SIDE, H = TEXTURE_SIDE;
+    canvas.width = W;
+    canvas.height = H;
     var ctx = canvas.getContext("2d");
 
     ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, 128, 128);
+    ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = "#777";
-    ctx.fillRect(1, 1, 126, 126);
+    ctx.fillRect(1, 1, W - 2, H - 2);
     var shift = Math.random() * canvas.width * 2 - canvas.width;
     var x = Math.min(-shift, 0);
-    var color = Math.floor(120 + Math.random() * 6);
+    var color = Math.floor(122 + Math.random() * 4);
     while (x < Math.max(canvas.width, canvas.width - shift)) {
         ctx.strokeStyle = "rgb(" + color + "," + color + "," + color + ")";
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x + shift, 128);
+        ctx.lineTo(x + shift, W);
         ctx.stroke();
         x += 2 + Math.random() * 5;
     }
-    ctx.font = 'Bold 96px Arial';
+    ctx.font = 'Bold ' + Math.floor(W * 3 / 4) + 'px Arial';
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "rgba(255, 255, 255, .3)";
     var x, y;
     for (y = -2 ; y < 3 ; y++) {
         for (x = -2 ; x < 3 ; x++) {
-            ctx.fillText(text, 64 + x, 64 + y);
+            ctx.fillText(text, W / 2 + x, H / 2 + y);
         }
     }
 
@@ -129,6 +131,8 @@ function createMaterial(text, color) {
     return new THREE.MeshPhongMaterial({
         specular: 0x333333,
         shininess: 25,
+        transparent: true,
+        opacity: .6,
         map: createTexture(text, color),
         specularMap: null,
         bumpMap: createBump(text)

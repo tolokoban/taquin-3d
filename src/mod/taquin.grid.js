@@ -29,7 +29,16 @@ var Grid = function(dx, dy, dz) {
 /**
  * @return void
  */
+Grid.prototype.setHole = function( hole ) {
+    this._hole = hole;
+};
+
+
+/**
+ * @return void
+ */
 Grid.prototype.anim = function(time) {
+    var hole = this._hole;
     var anim = this._anim;
     if (!anim.cube) return false;
     var dur = anim.end - anim.start;
@@ -56,6 +65,19 @@ Grid.prototype.anim = function(time) {
             anim.cube.position.y = anim.y0 + (anim.y1 - anim.y0) * (time - anim.start) / dur;
             anim.cube.position.z = anim.z0 + (anim.z1 - anim.z0) * (time - anim.start) / dur;
         }
+        if (hole) {
+            if (time >= anim.end) {
+                // End of animation. Set the to target position.
+                hole.position.x = anim.x0;
+                hole.position.y = anim.y0;
+                hole.position.z = anim.z0;
+                hole = null;
+            } else {
+                hole.position.x = anim.x1 + (anim.x0 - anim.x1) * (time - anim.start) / dur;
+                hole.position.y = anim.y1 + (anim.y0 - anim.y1) * (time - anim.start) / dur;
+                hole.position.z = anim.z1 + (anim.z0 - anim.z1) * (time - anim.start) / dur;
+            }
+        }
     }
     return true;
 };
@@ -74,7 +96,6 @@ Grid.prototype.tap = function(cube, time) {
     var y = cube.position.y;
     var z = cube.position.z;
     var vect = null;
-console.log(cx, cy, cz);
     if (this.cube(cx + 1, cy + 0, cz + 0) === null) {
         vect = [1,0,0];
     }
@@ -93,7 +114,6 @@ console.log(cx, cy, cz);
     else if (this.cube(cx + 0, cy + 0, cz - 1) === null) {
         vect = [0,0,-1];
     }
-console.info("[taquin.grid] vect=...", vect);
     if (!vect) {
         this._anim = {
             cube: cube,
@@ -112,7 +132,7 @@ console.info("[taquin.grid] vect=...", vect);
         };
         this.cube(cx + vect[0], cy + vect[1], cz + vect[2], cube);
         this.cube(cx, cy, cz, null);
-console.info("[taquin.grid] this._anim=...", this._anim);
+        console.info("[taquin.grid] this._anim=...", this._anim);
     }
 };
 

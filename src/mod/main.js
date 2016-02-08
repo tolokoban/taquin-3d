@@ -1,11 +1,12 @@
 var Cube = require("taquin.cube");
 var Grid = require("taquin.grid");
+var HollowCube = require("taquin.hollow-cube");
 var RotateTouch = require("taquin.rotate-touch");
 
 var W = Math.min( window.innerWidth, window.innerHeight );
 var H = W;
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, W / H, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 35, W / H, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( W, H );
 document.body.appendChild( renderer.domElement );
@@ -43,7 +44,6 @@ var light1 = new THREE.DirectionalLight( 0xdddddd, 0.8 );
 var light2 = new THREE.DirectionalLight( 0x9999ff, 0.5 );
 var group = new THREE.Group();
 
-scene.add( group );
 scene.add( light1 );
 scene.add( light2 );
 
@@ -62,7 +62,23 @@ for (x=0 ; x<3 ; x++) {
 }
 material = cube.material;
 
-camera.position.z = 4.3;
+var hollow = HollowCube(3);
+var hole = createHole();
+grid.setHole( hole );
+hollow.add(hole);
+var grpA = new THREE.Group();
+grpA.add(group);
+var grpB = new THREE.Group();
+grpB.add(hollow);
+
+grpA.position.set(-.2, .2, -.5);
+grpB.position.set(1.7, -1.7, 1);
+grpB.scale.set(.3,.3,.3);
+
+scene.add( grpA );
+scene.add( grpB );
+
+camera.position.z = 9;
 light1.position.set(3,0,5);
 light2.position.set(-1,2,4);
 var time0 = Date.now();
@@ -75,6 +91,7 @@ var touch = new RotateTouch(renderer.domElement);
 function render(time1) {
     var deltaTime = time1 - time0;
     touch.applyRotation(group, deltaTime);
+    touch.applyRotation(hollow, deltaTime);
     time0 = time1;
     touch.rotation.speedX *= .95;
     touch.rotation.speedY *= .95;
@@ -96,3 +113,49 @@ function render(time1) {
     renderer.render( scene, camera );
 }
 requestAnimationFrame( render );
+
+
+
+function createHole(s) {
+    if (typeof s === 'undefined') s = .5;
+
+    var colors = [
+        new THREE.Color(0,1,0),
+        new THREE.Color(0,1,1),
+        new THREE.Color(0,0,1),
+        new THREE.Color(1,0,0),
+        new THREE.Color(1,1,0),
+        new THREE.Color(1,0,1)
+    ];
+    var geo = new THREE.Geometry();
+    geo.vertices.push(
+        new THREE.Vector3( s, s, s),
+        new THREE.Vector3( s, s,-s),
+        new THREE.Vector3(-s, s,-s),
+        new THREE.Vector3(-s, s, s),
+        new THREE.Vector3( s,-s, s),
+        new THREE.Vector3( s,-s,-s),
+        new THREE.Vector3(-s,-s,-s),
+        new THREE.Vector3(-s,-s, s)
+    );
+    [
+        [0,1,2,3], [0,4,5,1], [1,5,6,2], [2,6,7,3], [0,3,7,4], [4,7,6,5]
+    ].forEach(function (vertices, idx) {
+        var face1 = new THREE.Face3( vertices[0], vertices[1], vertices[2] );
+        var face2 = new THREE.Face3( vertices[0], vertices[2], vertices[3] );
+        face1.vertexColors[0] = face1.vertexColors[1] = face1.vertexColors[2] = colors[idx];
+        face2.vertexColors[0] = face2.vertexColors[1] = face2.vertexColors[2] = colors[idx];
+        geo.faces.push( face1, face2 );
+    });
+
+    geo.computeFaceNormals ();
+    geo.computeVertexNormals ();
+    
+    var mat = new THREE.MeshPhongMaterial({
+        specular: 0x111111,
+        shininess: 2,
+        vertexColors: THREE.VertexColors        
+    });
+
+    return new THREE.Mesh( geo, mat );
+}

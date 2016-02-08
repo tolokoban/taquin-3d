@@ -17,6 +17,10 @@ hr {
     background: linear-gradient(to right, transparent, #fff, transparent);
 }
 
+section {
+    overflow: auto;
+}
+
 @media (orientation: portrait) {
     canvas {
         width: 100vw;
@@ -51,4 +55,9 @@ hr {
         box-shadow: 0 0 1px 1px #fff inset;
         color: #ddd;
     }
+}
+
+footer {
+    font-size: 70%;
+    color: #bbb;
 }
