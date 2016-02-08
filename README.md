@@ -1,6 +1,6 @@
 # taquin-3d
 
-[!screenshot.jpg]
+![screenshot.jpg](screenshot.jpg)
 
 The classical game called _Taquin_ in french is a board on which lie 15 little squares arranged in 4 rows and 4 cols. The remaining space allows contiguous squares to slide. In english, this game if often call [15-puzzle](https://en.wikipedia.org/wiki/15_puzzle).
 
